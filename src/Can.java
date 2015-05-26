@@ -22,7 +22,6 @@ public class Can
 	//Find can in circle
 	public void findCanInCircle() throws InterruptedException
 	{
-		Time time = new Time();
 		int MAX_DISTANCE = 65;
 		int PERIOD = 500;
 		
@@ -30,7 +29,7 @@ public class Can
 		FeatureDetector fd = new RangeFeatureDetector(us, MAX_DISTANCE, PERIOD);
 		
 		//while cans exist
-		while(existInCircle() && time.calculate() < 60)
+		while(existInCircle() && Time.calculate() < 60)
 		{
 			//spin/turn robot around inside circle slowly
 			motor.spinLeft();

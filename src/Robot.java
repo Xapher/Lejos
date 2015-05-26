@@ -13,7 +13,7 @@ public class Robot
 		if(Can.missionSuccess) Message.displayGood(); else Message.displayBad();
 		
 		//leave circle
-		
+		Circle.leaveCircle();
 		
 	}
 }
