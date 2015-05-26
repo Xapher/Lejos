@@ -56,23 +56,46 @@ public class Can
 		TouchSensor t = new TouchSensor(SensorPort.S1);
 		LightSensor light = new LightSensor(SensorPort.S2);
 		//move forward toward can
-		motor.forward();
 		//robot gets to the can
-		if(t.isPressed())
-		{
-			Thread.sleep(1000);
-			cansRemoved++;
-		}
 		
-		//sense the black line
+		
+		
+		while(!t.isPressed() || light.readValue() > 45)
+		{
+			motor.forward();
+		}
+		motor.stop();
+		motor.backwards();
+		Thread.sleep(1000);
+		findCanInCircle();
 		if(light.readValue() < 45)
 		{
-			//back up and start again.
+			Thread.sleep(500);
+			cansRemoved++;
 			motor.backwards();
 			Thread.sleep(2000);
 			motor.stop();
 			findCanInCircle();
 		}
+		
+		
+		
+//		if(t.isPressed())
+//		{
+//			//is the can out of the circle? if it gets to the can it's out?
+//			Thread.sleep(1000);
+//			cansRemoved++;
+//		}
+//		
+//		//sense the black line
+//		if(light.readValue() < 45)
+//		{
+//			//back up and start again.
+//			motor.backwards();
+//			Thread.sleep(2000);
+//			motor.stop();
+//			findCanInCircle();
+//		}
 	}
 	
 	public boolean existInCircle()

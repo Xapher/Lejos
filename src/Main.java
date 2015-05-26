@@ -7,7 +7,7 @@ public class Main
 //		vs.play();
 		
 		Time.start();
-		while(Time.calculate() < 15)
+		while(Time.calculate() < 60)
 		{
 			System.out.println(Time.calculate());
 			if(Time.calculate() == 10)
@@ -19,10 +19,24 @@ public class Main
 		System.out.println("Time: " + Time.timeToClear);
 		Thread.sleep(3000);
 			
-		
 		//Find can in circle
+		
+		
+		
+		
+		
 //		Can can = new Can();
 //		can.findCanInCircle();
+//		while(can.existInCircle())
+//		{
+//			can.removeCanFromCircle();
+//		}
+		
+		
+		
+		
+		
+		
 		/*
 		 *  Find can in circle
 			While cans exist … push can out of circle
