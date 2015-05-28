@@ -3,8 +3,8 @@ public class Main
 {
 	public static void main(String[] args) throws InterruptedException 
 	{
-//		BackUpSound vs = new BackUpSound();
-//		vs.play();
+		FailureSound vs = new FailureSound();
+		vs.play();
 		
 		Time.start();
 //		while(Time.calculate() < 15)
@@ -25,12 +25,12 @@ public class Main
 		
 		
 		
-		Can can = new Can();
-		can.findCanInCircle();
-		while(can.existInCircle())
-		{
-			can.removeCanFromCircle();
-		}
+//		Can can = new Can();
+//		can.findCanInCircle();
+//		while(can.existInCircle())
+//		{
+//			can.removeCanFromCircle();
+//		}
 		
 		
 		
