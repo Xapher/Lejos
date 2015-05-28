@@ -7,30 +7,30 @@ public class Main
 //		vs.play();
 		
 		Time.start();
-		while(Time.calculate() < 60)
-		{
-			System.out.println(Time.calculate());
-			if(Time.calculate() == 10)
-			{
-				Time.timeToClear = Time.calculate();
-			}
-			Thread.sleep(1000);
-		}
-		System.out.println("Time: " + Time.timeToClear);
-		Thread.sleep(3000);
-			
+//		while(Time.calculate() < 15)
+//		{
+//			System.out.println(Time.calculate());
+//			if(Time.calculate() == 10)
+//			{
+//				Time.timeToClear = Time.calculate();
+//			}
+//			Thread.sleep(1000);
+//		}
+//		System.out.println("Time: " + Time.timeToClear);
+//		Thread.sleep(3000);
+//		
 		//Find can in circle
 		
 		
 		
 		
 		
-//		Can can = new Can();
-//		can.findCanInCircle();
-//		while(can.existInCircle())
-//		{
-//			can.removeCanFromCircle();
-//		}
+		Can can = new Can();
+		can.findCanInCircle();
+		while(can.existInCircle())
+		{
+			can.removeCanFromCircle();
+		}
 		
 		
 		
@@ -46,8 +46,6 @@ public class Main
 			leave circle
 		 */
 		
-		System.out.println("FASDF");
-	}
-	
-	
+		//System.out.println("FASDF");
+	}	
 }

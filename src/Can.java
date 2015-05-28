@@ -13,17 +13,18 @@ public class Can
 {
 	private NXTMotor m1 = new NXTMotor(MotorPort.A);
 	private NXTMotor m2 = new NXTMotor(MotorPort.B);
-	private Motor motor = new Motor(m1, m2, 100);
+	private Motor motor = new Motor(m1, m2, 40);
 	private int cansRemoved = 0;
 	public static boolean missionFinished = false;
 	public static boolean missionSuccess = true;
+	LightSensor light = new LightSensor(SensorPort.S2);
 	Robot robot = new Robot();
 	
 	//Find can in circle
 	public void findCanInCircle() throws InterruptedException
 	{
-		int MAX_DISTANCE = 65;
-		int PERIOD = 500;
+		int MAX_DISTANCE = 40;
+		int PERIOD = 200;
 		
 		UltrasonicSensor us = new UltrasonicSensor(SensorPort.S4);
 		FeatureDetector fd = new RangeFeatureDetector(us, MAX_DISTANCE, PERIOD);
@@ -38,6 +39,8 @@ public class Can
 			//when it finds a can
 			if(result != null)
 			{
+				light.readValue();
+				//Thread.sleep(20);
 				System.out.println("Range: " + result.getRangeReading().getRange());
 				motor.stop();
 				//remove can from circle
@@ -54,29 +57,43 @@ public class Can
 	public void removeCanFromCircle() throws InterruptedException
 	{
 		TouchSensor t = new TouchSensor(SensorPort.S1);
-		LightSensor light = new LightSensor(SensorPort.S2);
+		
 		//move forward toward can
 		//robot gets to the can
+		light.readValue();
 		
-		
-		
-		while(!t.isPressed() || light.readValue() > 45)
+		motor.forward(70);
+		while(!t.isPressed())
 		{
-			motor.forward();
+			light.readValue();
+			if(t.isPressed())
+			{
+				System.out.println("Touched");
+				while(light.readValue() > 40)
+				{
+					System.out.println(light.readValue());
+				}
+				motor.forward(70);
+				Thread.sleep(200);
+				motor.stop();
+				motor.backwards(70);
+				Thread.sleep(2000);
+				motor.stop();
+				cansRemoved++;
+				findCanInCircle();
+			}
+			if(light.readValue() < 40)
+			{
+				System.out.println(light.readValue());
+				motor.stop();
+				motor.backwards(70);
+				Thread.sleep(2000);
+				motor.stop();
+				findCanInCircle();
+			}
 		}
-		motor.stop();
-		motor.backwards();
-		Thread.sleep(1000);
-		findCanInCircle();
-		if(light.readValue() < 45)
-		{
-			Thread.sleep(500);
-			cansRemoved++;
-			motor.backwards();
-			Thread.sleep(2000);
-			motor.stop();
-			findCanInCircle();
-		}
+		
+		
 		
 		
 		

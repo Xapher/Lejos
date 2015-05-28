@@ -12,14 +12,20 @@ public class Circle
 		NXTMotor m1 = new NXTMotor(MotorPort.A);
 		NXTMotor m2 = new NXTMotor(MotorPort.B);
 		LightSensor light = new LightSensor(SensorPort.S2);
-		Motor motor = new Motor(m1,m2,100);
+		Motor motor = new Motor(m1,m2,10);
 		
 		//make robot leave the circle
-		motor.forward();
-		if(light.readValue() < 45)
+		while(light.readValue() < 45)
 		{
-			Thread.sleep(2000);
-			motor.stop();
+			motor.forward(100);
+			if(light.readValue() < 45)
+			{
+				Thread.sleep(2000);
+				motor.stop();
+				break;
+			}
 		}
+		
+		
 	}
 }
