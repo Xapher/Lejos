@@ -1,3 +1,4 @@
+package lejosRover;
 import lejos.nxt.LightSensor;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTMotor;
@@ -17,7 +18,7 @@ public class Circle
 		//make robot leave the circle
 		while(light.readValue() < 45)
 		{
-			motor.forward(100);
+			motor.forward();
 			if(light.readValue() < 45)
 			{
 				Thread.sleep(2000);

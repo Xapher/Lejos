@@ -1,3 +1,4 @@
+package lejosRover;
 import lejos.nxt.LightSensor;
 import lejos.nxt.MotorPort;
 import lejos.nxt.NXTMotor;
@@ -13,7 +14,7 @@ public class Can
 {
 	private NXTMotor m1 = new NXTMotor(MotorPort.A);
 	private NXTMotor m2 = new NXTMotor(MotorPort.B);
-	private Motor motor = new Motor(m1, m2, 40);
+	private Motor motor = new Motor(m1, m2, 70);
 	private int cansRemoved = 0;
 	public static boolean missionFinished = false;
 	public static boolean missionSuccess = true;
@@ -51,7 +52,8 @@ public class Can
 		Time.timeToClear = Time.calculate();
 		missionFinished = true;
 		missionSuccess = (cansRemoved == 3) ? true : false;
-		robot.missionIsOver();
+		
+		robot.missionIsOver(((missionSuccess) ? new VictorySound() : new FailureSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
 	}
 	
 	public void removeCanFromCircle() throws InterruptedException
@@ -62,7 +64,7 @@ public class Can
 		//robot gets to the can
 		light.readValue();
 		
-		motor.forward(70);
+		motor.forward();
 		while(!t.isPressed())
 		{
 			light.readValue();
@@ -73,10 +75,10 @@ public class Can
 				{
 					System.out.println(light.readValue());
 				}
-				motor.forward(70);
+				motor.forward();
 				Thread.sleep(200);
 				motor.stop();
-				motor.backwards(70);
+				motor.backwards();
 				Thread.sleep(2000);
 				motor.stop();
 				cansRemoved++;
@@ -86,7 +88,7 @@ public class Can
 			{
 				System.out.println(light.readValue());
 				motor.stop();
-				motor.backwards(70);
+				motor.backwards();
 				Thread.sleep(2000);
 				motor.stop();
 				findCanInCircle();

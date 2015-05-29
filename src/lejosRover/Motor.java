@@ -1,53 +1,31 @@
+package lejosRover;
 import lejos.nxt.NXTMotor;
 
 
-public class Motor 
+public class Motor implements IMotor
 {
 	NXTMotor left;
 	NXTMotor right;
 	BackUpSound beep = new BackUpSound();
-	int power;
 	
 	public Motor(NXTMotor m1, NXTMotor m2, int power)
 	{
-		power = power;
 		left = m1;
 		right = m2;
 		left.setPower(power);
 		right.setPower(power);
 	}
 	
-	public void forward(int power) throws InterruptedException
+	public void forward()
 	{
-		if(power != this.power)
-		{
-			left.setPower(power);
-			right.setPower(power);
-		}
-		else
-		{
-			left.setPower(20);
-			right.setPower(20);
-		}
 		left.forward();
 		right.forward();
 		
 		//Thread.sleep(2000);
 	}
 	
-
-	public void backwards(int power)
+	public void backwards()
 	{
-		if(power != this.power)
-		{
-			left.setPower(power);
-			right.setPower(power);
-		}
-		else
-		{
-			left.setPower(20);
-			right.setPower(20);
-		}
 		beep.play();
 		left.backward();
 		right.backward();
