@@ -1,17 +1,30 @@
 package lejosRover;
 
+import dummyData.FakeBadSound;
+import dummyData.FakeGoodSound;
+import dummyData.FakeLight;
+import dummyData.FakeMotor;
+import dummyData.FakeTouch;
+import dummyData.FakeUltrasonic;
+
 public class Can 
 {
-	private IMotor motor = new Motor(70);
+	//private IMotor motor = new Motor(70);
+	private IMotor motor = new FakeMotor();
+	
 	private int cansRemoved = 0;
 	public static boolean missionSuccess = true;
-	ILight light = new SensorOfLight();
+	
+	//ILight light = new SensorOfLight();
+	ILight light = new FakeLight();
+	
 	Robot robot = new Robot();
 	
 	//Find can in circle
 	public void findCanInCircle() throws InterruptedException
 	{
-		IUltrasonic us = new SensorOfUltra();
+		//IUltrasonic us = new SensorOfUltra();
+		IUltrasonic us = new FakeUltrasonic();
 		
 		//while cans exist
 		while(existInCircle() && Time.calculate() < 60)
@@ -35,12 +48,14 @@ public class Can
 		Time.timeToClear = Time.calculate();
 		missionSuccess = (cansRemoved == 3) ? true : false;
 		
-		robot.missionIsOver(((missionSuccess) ? new VictorySound() : new FailureSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
+		//robot.missionIsOver(((missionSuccess) ? new VictorySound() : new FailureSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
+		robot.missionIsOver(((missionSuccess) ? new FakeGoodSound() : new FakeBadSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
 	}
 	
 	public void removeCanFromCircle() throws InterruptedException
 	{
-		ITouch t = new SensorOfTouch();
+		//ITouch t = new SensorOfTouch();
+		ITouch t = new FakeTouch();
 		
 		//move forward toward can
 		//robot gets to the can
@@ -76,6 +91,7 @@ public class Can
 				findCanInCircle();
 			}
 		}
+		
 		
 //		if(t.isPressed())
 //		{
