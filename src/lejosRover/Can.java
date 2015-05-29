@@ -1,48 +1,31 @@
 package lejosRover;
-import lejos.nxt.LightSensor;
-import lejos.nxt.MotorPort;
-import lejos.nxt.NXTMotor;
-import lejos.nxt.SensorPort;
-import lejos.nxt.TouchSensor;
-import lejos.nxt.UltrasonicSensor;
-import lejos.robotics.objectdetection.Feature;
-import lejos.robotics.objectdetection.FeatureDetector;
-import lejos.robotics.objectdetection.RangeFeatureDetector;
-
 
 public class Can 
 {
-	private NXTMotor m1 = new NXTMotor(MotorPort.A);
-	private NXTMotor m2 = new NXTMotor(MotorPort.B);
-	private Motor motor = new Motor(m1, m2, 70);
+	private IMotor motor = new Motor(70);
 	private int cansRemoved = 0;
-	public static boolean missionFinished = false;
 	public static boolean missionSuccess = true;
-	LightSensor light = new LightSensor(SensorPort.S2);
+	ILight light = new SensorOfLight();
 	Robot robot = new Robot();
 	
 	//Find can in circle
 	public void findCanInCircle() throws InterruptedException
 	{
-		int MAX_DISTANCE = 40;
-		int PERIOD = 200;
-		
-		UltrasonicSensor us = new UltrasonicSensor(SensorPort.S4);
-		FeatureDetector fd = new RangeFeatureDetector(us, MAX_DISTANCE, PERIOD);
+		IUltrasonic us = new SensorOfUltra();
 		
 		//while cans exist
 		while(existInCircle() && Time.calculate() < 60)
 		{
 			//spin/turn robot around inside circle slowly
 			motor.spinLeft();
-			Feature result = fd.scan();
+			Object result = us.scan();
 			
 			//when it finds a can
 			if(result != null)
 			{
 				light.readValue();
 				//Thread.sleep(20);
-				System.out.println("Range: " + result.getRangeReading().getRange());
+				System.out.println("Range: " + us.getRange());
 				motor.stop();
 				//remove can from circle
 				removeCanFromCircle();
@@ -50,7 +33,6 @@ public class Can
 		}
 		
 		Time.timeToClear = Time.calculate();
-		missionFinished = true;
 		missionSuccess = (cansRemoved == 3) ? true : false;
 		
 		robot.missionIsOver(((missionSuccess) ? new VictorySound() : new FailureSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
@@ -58,7 +40,7 @@ public class Can
 	
 	public void removeCanFromCircle() throws InterruptedException
 	{
-		TouchSensor t = new TouchSensor(SensorPort.S1);
+		ITouch t = new SensorOfTouch();
 		
 		//move forward toward can
 		//robot gets to the can
@@ -95,10 +77,6 @@ public class Can
 			}
 		}
 		
-		
-		
-		
-		
 //		if(t.isPressed())
 //		{
 //			//is the can out of the circle? if it gets to the can it's out?
@@ -123,6 +101,21 @@ public class Can
 		return cansRemoved < 3 ? true : false; 
 	}
 	
+	
+	//when everything is over, leave the circle
+	public void leaveCircle() throws InterruptedException
+	{
+		while(light.readValue() < 45)
+		{
+			motor.forward();
+			if(light.readValue() < 45)
+			{
+				Thread.sleep(2000);
+				motor.stop();
+				break;
+			}
+		}
+	}
 }
 
 
