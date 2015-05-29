@@ -9,32 +9,33 @@ import dummyData.FakeUltrasonic;
 
 public class Can 
 {
-	//private IMotor motor = new Motor(70);
-	private IMotor motor = new FakeMotor();
+	private IMotor motor = new Motor(70);
+	//private IMotor motor = new FakeMotor();
 	
-	private int cansRemoved = 0;
+	public int cansRemoved = 0;
 	public static boolean missionSuccess = true;
+	//IUltrasonic us = new FakeUltrasonic();
+	//public Object result = us.scan();
+	//public ITouch t = new FakeTouch();
 	
-	//ILight light = new SensorOfLight();
-	ILight light = new FakeLight();
+	ILight light = new SensorOfLight();
+	//public ILight light = new FakeLight();
 	
-	Robot robot = new Robot();
+	Robot robot = new Robot(); 
 	
 	//Find can in circle
 	public void findCanInCircle() throws InterruptedException
 	{
-		//IUltrasonic us = new SensorOfUltra();
-		IUltrasonic us = new FakeUltrasonic();
+		IUltrasonic us = new SensorOfUltra();
 		
 		//while cans exist
-		while(existInCircle() && Time.calculate() < 60)
+		while(existInCircle() && Time.calculate() < 60) 
 		{
 			//spin/turn robot around inside circle slowly
 			motor.spinLeft();
-			Object result = us.scan();
 			
 			//when it finds a can
-			if(result != null)
+			if(us.scan() != null)
 			{
 				light.readValue();
 				//Thread.sleep(20);
@@ -42,26 +43,26 @@ public class Can
 				motor.stop();
 				//remove can from circle
 				removeCanFromCircle();
-			}			
+			}			 
 		}
-		
+		 
 		Time.timeToClear = Time.calculate();
 		missionSuccess = (cansRemoved == 3) ? true : false;
-		
-		//robot.missionIsOver(((missionSuccess) ? new VictorySound() : new FailureSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
-		robot.missionIsOver(((missionSuccess) ? new FakeGoodSound() : new FakeBadSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
+		motor.stop();
+		robot.missionIsOver(((missionSuccess) ? new VictorySound() : new FailureSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
+		//robot.missionIsOver(((missionSuccess) ? new FakeGoodSound() : new FakeBadSound()), ((missionSuccess) ? new GoodMessage() : new BadMessage()));
 	}
 	
 	public void removeCanFromCircle() throws InterruptedException
 	{
-		//ITouch t = new SensorOfTouch();
-		ITouch t = new FakeTouch();
+		ITouch t = new SensorOfTouch();
 		
 		//move forward toward can
 		//robot gets to the can
 		light.readValue();
 		
-		motor.forward();
+		System.out.println("HAI");
+		motor.forward(70);
 		while(!t.isPressed())
 		{
 			light.readValue();
@@ -72,10 +73,10 @@ public class Can
 				{
 					System.out.println(light.readValue());
 				}
-				motor.forward();
+				motor.forward(70);
 				Thread.sleep(200);
 				motor.stop();
-				motor.backwards();
+				motor.backwards(70);
 				Thread.sleep(2000);
 				motor.stop();
 				cansRemoved++;
@@ -85,12 +86,27 @@ public class Can
 			{
 				System.out.println(light.readValue());
 				motor.stop();
-				motor.backwards();
+				motor.backwards(70);
 				Thread.sleep(2000);
 				motor.stop();
 				findCanInCircle();
 			}
 		}
+			
+//		if(light.readValue() < 40)
+//		{
+//			System.out.println(light.readValue());
+//			motor.stop();
+//			motor.backwards();
+//			Thread.sleep(2000);
+//			motor.stop();
+//			findCanInCircle();
+//		}
+		
+//		while(!t.isPressed())
+//		{
+//			light.readValue();
+//		}
 		
 		
 //		if(t.isPressed())
@@ -121,16 +137,24 @@ public class Can
 	//when everything is over, leave the circle
 	public void leaveCircle() throws InterruptedException
 	{
-		while(light.readValue() < 45)
+//		while(light.readValue() < 45)
+//		{
+//			motor.forward();
+//			if(light.readValue() > 45)
+//			{
+//				Thread.sleep(2000);
+//				motor.stop();
+//				break;
+//			}
+//		}
+		motor.forward(70);
+		if(light.readValue() > 45)
 		{
-			motor.forward();
-			if(light.readValue() < 45)
-			{
-				Thread.sleep(2000);
-				motor.stop();
-				break;
-			}
+			Thread.sleep(2000);
+			motor.stop();
+			System.exit(1);
 		}
+		
 	}
 }
 

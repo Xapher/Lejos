@@ -8,21 +8,30 @@ public class Motor implements IMotor
 	NXTMotor left = new NXTMotor(MotorPort.A);
 	NXTMotor right = new NXTMotor(MotorPort.B);
 	BackUpSound beep = new BackUpSound();
+	int power;
 	
 	public Motor(int power)
 	{
+		this.power = power;
 		left.setPower(power);
 		right.setPower(power);
 	}
 	
-	public void forward()
+	public void forward(int power)
 	{
+		left.setPower(power);
+		right.setPower(power);
 		left.forward();
 		right.forward();
+		
+		//Thread.sleep(2000);
 	}
 	
-	public void backwards()
+
+	public void backwards(int power)
 	{
+		left.setPower(power);
+		right.setPower(power);
 		beep.play();
 		left.backward();
 		right.backward();
@@ -37,8 +46,8 @@ public class Motor implements IMotor
 	
 	public void spinLeft()
 	{
-		left.setPower(50);
-		right.setPower(50);
+		left.setPower(30);
+		right.setPower(30);
 		left.backward();
 		right.forward();
 	}
