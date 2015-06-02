@@ -5,14 +5,17 @@ import lejos.nxt.NXTMotor;
 
 public class Motor implements IMotor
 {
-	NXTMotor left = new NXTMotor(MotorPort.A);
-	NXTMotor right = new NXTMotor(MotorPort.B);
+	NXTMotor left;
+	NXTMotor right;
+	
 	BackUpSound beep = new BackUpSound();
 	int power;
 	
-	public Motor(int power)
+	public Motor(IMotor m1, IMotor m2, int power)
 	{
 		this.power = power;
+		this.left = (NXTMotor) m1;
+		this.right = (NXTMotor) m2;
 		left.setPower(power);
 		right.setPower(power);
 	}

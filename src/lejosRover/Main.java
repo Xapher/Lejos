@@ -1,43 +1,28 @@
 package lejosRover;
 
+import lejos.nxt.MotorPort;
+import lejos.nxt.NXT;
+import lejos.nxt.NXTMotor;
+
 public class Main 
 {
 	public static void main(String[] args) throws InterruptedException 
-	{
-//		FailureSound vs = new FailureSound();
-//		vs.play();
-		
+	{		
 		Time.start();
-//		while(Time.calculate() < 15)
-//		{
-//			System.out.println(Time.calculate());
-//			if(Time.calculate() == 10)
-//			{
-//				Time.timeToClear = Time.calculate();
-//			}
-//			Thread.sleep(1000);
-//		}
-//		System.out.println("Time: " + Time.timeToClear);
-//		Thread.sleep(3000);
-//		
 		//Find can in circle
+		IMotor m1 = (IMotor) new NXTMotor(MotorPort.A);
+		IMotor m2 = (IMotor) new NXTMotor(MotorPort.B);
+		IMotor motor = new Motor(m1, m2, 70);
 		
+		IUltrasonic us = new SensorOfUltra();
+		ILight light = new SensorOfLight();
+		ITouch t = new SensorOfTouch();
+		RobotSounds good = new VictorySound();
+		RobotSounds bad = new FailureSound();
 		
-		
-		
-		
-		Can can = new Can();
+		Can can = new Can(motor, us, light, t, good, bad);
 		can.findCanInCircle();
-//		while(can.existInCircle())
-//		{
-//			can.removeCanFromCircle();
-//		}
-		
-		
-		
-		
-		
-		
+
 		/*
 		 *  Find can in circle
 			While cans exist … push can out of circle
